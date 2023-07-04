@@ -3,8 +3,7 @@ import sys,os
 from bs4 import BeautifulSoup
 import requests
 
-tmp_id = "wRQA9BlBGgb4RI8"
-tmp_tk = "q2OLFXoopyoudVAO5owuE8Pg3OHxFTqKLRXiEhWRmQxmiSNdtyh0dAyUH9jt96Pc"
+from common import *
 
 cookies = requests.cookies.RequestsCookieJar()
 cookies.set("TournoiEnLigneid",tmp_id)
@@ -29,14 +28,27 @@ headers =  {
     "credentials": "include",
 }
 
+if not os.path.isdir("Player_Flag"):
+    os.mkdir("Player_Flag")
+
 
 country = dict()
 for line in open("all.csv"):
-    turl = f"https://boardgamearena.com/player?id=83898877"
+    items = line.strip().split("\t")
+    oppo_id = items[3]
+    if os.path.isfile(f"Player_Flag/{oppo_id}"):
+        continue
+    turl = f"https://boardgamearena.com/player?id={oppo_id}"
+    print(turl)
+    #sys.exit()
     r = requests.get(turl,cookies=cookies, headers = headers )
     soup = BeautifulSoup(r.text, 'html.parser')
 
     a = soup.find_all(class_ = "flag")[0]
-    print(a.parent.text.lstrip().strip())
+    flag = a.parent.text.lstrip().strip()
+    with open(f"Player_Flag/{oppo_id}",'w') as ofp:
+        ofp.write(flag)
+        ofp.write("\n")
+    print( items[1], oppo_id, flag )
 
 

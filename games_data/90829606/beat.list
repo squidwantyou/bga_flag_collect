@@ -1,4 +1,4 @@
-Win	Lose	Start at	Table id
-quiet orange	sofy	1688366303	393096611
-quiet orange	sofy	1688365485	393087988
-quiet orange	henryeternal	1688231648	392610350
+Win	Lose	Player_id	Oppo_id	Start at	Table id
+quiet orange	sofy	90829606	35633	1688366303	393096611
+quiet orange	sofy	90829606	35633	1688365485	393087988
+quiet orange	henryeternal	90829606	88438070	1688231648	392610350

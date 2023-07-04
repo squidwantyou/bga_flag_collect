@@ -3,6 +3,8 @@ import sys,os
 import requests
 import json
 
+from common import *
+
 input_file = "player_name.list"
 output_file = "player_id.list"
 

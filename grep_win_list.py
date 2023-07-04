@@ -2,8 +2,11 @@
 import sys,os
 import json
 
+from common import *
+
 infile = "player_id.list"
 
+ofp2 = open("all.csv",'w')
 for line in open(infile):
     line = line.strip()
     p_name = " ".join(line.split()[:-1])
@@ -12,7 +15,7 @@ for line in open(infile):
     os.system(f"touch 'games_data/{p_id}/0.{p_name}'")
 
     with open(f"games_data/{p_id}/beat.list",'w') as ofp:
-        ofp.write(("\t".join( [ "Win","Lose", "Start at", "Table id"] ) ) )  
+        ofp.write(("\t".join( [ "Win","Lose", "Player_id", "Oppo_id", "Start at", "Table id"] ) ) )  
         ofp.write("\n")
         i = 1
         while True:
@@ -38,11 +41,15 @@ for line in open(infile):
                     if int(oppo) != p_id and int(rank[oppo]) > int(rank[p_id]):
 #                        print( names, ranks )
 #                        print( p_id, oppo, table['table_id'] )
-                        ofp.write(("\t".join( [ name[p_id], name[oppo],  table['start'], table['table_id']] ) ) )  
+                        ofp.write(("\t".join( [ name[p_id], name[oppo], str(p_id),  str(oppo),  table['start'], table['table_id']] ) ) )  
                         ofp.write("\n")
+                        ofp2.write(("\t".join( [ name[p_id], name[oppo], str(p_id),  str(oppo),  table['start'], table['table_id']] ) ) )  
+                        ofp2.write("\n")
                     
+            i += 1
+
+ofp2.close()
                 
                #{'table_id': '393061428', 'game_name': 'seasons', 'game_id': '30', 'start': '1688357154', 'end': '1688358987', 'concede': '0', 'unranked': '0', 'normalend': '1', 'players': '85409012,85068842', 'player_names': 'zhix,Dagedog', 'scores': '210,150', 'ranks': '1,2', 'elo_win': '-14', 'elo_penalty': '', 'elo_after': '1783', 'arena_win': None, 'arena_after': '1.1500'} 
 
-            i += 1
 
