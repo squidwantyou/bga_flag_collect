@@ -3,8 +3,8 @@ import sys,os
 import requests
 import json
 
-input_file = "player_name.list"
-output_file = "player_id.list"
+
+input_file = "player_id.list"
 
 tmp_id = "wRQA9BlBGgb4RI8"
 tmp_tk = "q2OLFXoopyoudVAO5owuE8Pg3OHxFTqKLRXiEhWRmQxmiSNdtyh0dAyUH9jt96Pc"
@@ -32,14 +32,28 @@ headers =  {
     "credentials": "include",
 }
 
-with open(output_file,'w') as ofp:
-    for line in open(input_file):
-        query_name = line.strip()
-        url = f"https://boardgamearena.com/omnibar/omnibar/search.html?query={query_name}"
-        r = requests.get(url,cookies=cookies, headers = headers )
+for line in open(input_file):
+    p_id = int(line.split()[-1] )
+    os.system(f"mkdir games_data/{p_id}")
+    
+    i = 1
+    while True:
+        if i == 1:
+            j = 1
+        else :
+            j = 0
+        turl = f"https://boardgamearena.com/gamestats/gamestats/getGames.html?player={p_id}&opponent_id=0&game_id=30&start_date=1688227200&finished=0&page={i}&updateStats={j}"
+        r = requests.get(turl,cookies=cookies, headers = headers )
         tmp = json.loads(r.text)
-        for a in tmp['data']['players']:
-            if a['fullname'] == query_name:
-                ofp.write(f"{a['fullname']} {a['id']}\n")
 
 
+        if len(tmp['data']['tables'] ) == 0:
+            break
+        else:
+            with open(f"games_data/{p_id}/{i}.json",'w') as ofp:
+                ofp.write(r.text)
+
+        if i == 100:
+            break
+        i += 1
+    

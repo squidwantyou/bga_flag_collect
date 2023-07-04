@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 import sys,os
+from bs4 import BeautifulSoup
 import requests
-import json
-
-input_file = "player_name.list"
-output_file = "player_id.list"
 
 tmp_id = "wRQA9BlBGgb4RI8"
 tmp_tk = "q2OLFXoopyoudVAO5owuE8Pg3OHxFTqKLRXiEhWRmQxmiSNdtyh0dAyUH9jt96Pc"
@@ -32,14 +29,14 @@ headers =  {
     "credentials": "include",
 }
 
-with open(output_file,'w') as ofp:
-    for line in open(input_file):
-        query_name = line.strip()
-        url = f"https://boardgamearena.com/omnibar/omnibar/search.html?query={query_name}"
-        r = requests.get(url,cookies=cookies, headers = headers )
-        tmp = json.loads(r.text)
-        for a in tmp['data']['players']:
-            if a['fullname'] == query_name:
-                ofp.write(f"{a['fullname']} {a['id']}\n")
+
+country = dict()
+for line in open("all.csv"):
+    turl = f"https://boardgamearena.com/player?id=83898877"
+    r = requests.get(turl,cookies=cookies, headers = headers )
+    soup = BeautifulSoup(r.text, 'html.parser')
+
+    a = soup.find_all(class_ = "flag")[0]
+    print(a.parent.text.lstrip().strip())
 
 
