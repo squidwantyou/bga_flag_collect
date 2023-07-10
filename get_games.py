@@ -36,6 +36,7 @@ headers =  {
 
 for line in open(input_file):
     p_id = int(line.split()[-1] )
+    print( p_id )
     os.system(f"mkdir games_data/{p_id}")
     
     i = 1
