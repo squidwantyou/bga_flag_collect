@@ -36,24 +36,21 @@ country = dict()
 for line in open("all.csv"):
     items = line.strip().split("\t")
     oppo_id = items[3]
+    turl = f"https://boardgamearena.com/player?id={oppo_id}"
+    print(turl)
+    #sys.exit()
+    r = requests.get(turl,cookies=cookies, headers = headers )
+    print(r.text)
+    sys.exit()
+    soup = BeautifulSoup(r.text, 'html.parser')
 
-    if os.path.isfile(f"Player_Flag/{oppo_id}"):
-        continue
-    try:
-        turl = f"https://boardgamearena.com/player?id={oppo_id}"
-        print(turl)
-        #sys.exit()
-        r = requests.get(turl,cookies=cookies, headers = headers )
-        soup = BeautifulSoup(r.text, 'html.parser')
 
-        a = soup.find_all(class_ = "flag")[0]
-        flag = a.parent.text.lstrip().strip()
-    except:
-        flag = "ERROR"
-
+    a = soup.find_all(class_ = "flag")[0]
+    flag = a.parent.text.lstrip().strip()
     with open(f"Player_Flag/{oppo_id}",'w') as ofp:
         ofp.write(flag)
         ofp.write("\n")
     print( items[1], oppo_id, flag )
 
+    sys.exit()
 
