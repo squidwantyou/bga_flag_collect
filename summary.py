@@ -16,7 +16,7 @@ for line in open("all.csv"):
     ofp.write( "\t".join([p_name,o_name,p,o,start,table,flag]) )
     ofp.write( "\n" )
 
-    if flag in ("China","Taiwan","Hong Kong","Macao","ERROR"):
+    if flag in ("China","Taiwan","Hong Kong","Macao","ERROR","中国","香港","台湾","澳门"):
         continue
 
 
