@@ -44,16 +44,19 @@ for line in open("all.csv"):
         print(turl)
         #sys.exit()
         r = requests.get(turl,cookies=cookies, headers = headers )
+#        print(r.text)
         soup = BeautifulSoup(r.text, 'html.parser')
 
-        a = soup.find_all(class_ = "flag")[0]
+        a = soup.find_all(class_ = "bga-flag")[0]
         flag = a.parent.text.lstrip().strip()
-    except:
+    except Exception as e:
+        print(e)
         flag = "ERROR"
 
     with open(f"Player_Flag/{oppo_id}",'w') as ofp:
         ofp.write(flag)
         ofp.write("\n")
     print( items[1], oppo_id, flag )
+
 
 
